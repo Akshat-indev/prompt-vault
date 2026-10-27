@@ -1,0 +1,16 @@
+{
+  "name": "promptshelf-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PromptShelf full-stack workspace",
+  "scripts": {
+    "dev:backend": "npm --prefix promptshelf-backend run dev",
+    "dev:frontend": "npm --prefix promptshelf-frontend run dev",
+    "build:backend": "npm --prefix promptshelf-backend run build",
+    "build:frontend": "npm --prefix promptshelf-frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:backend": "npm --prefix promptshelf-backend test",
+    "test:frontend": "npm --prefix promptshelf-frontend test",
+    "test": "npm run test:backend && npm run test:frontend"
+  }
+}
