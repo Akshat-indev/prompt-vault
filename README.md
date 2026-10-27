@@ -131,3 +131,26 @@ npm run test:backend
 # Test frontend template parsing & variable substitution
 npm run test:frontend
 ```
+
+## Deploying to Vercel and Render
+
+The repository is deployable as a standard monorepo. Deploy the frontend from
+`promptshelf-frontend` on Vercel and create the backend from the root
+`render.yaml` Blueprint on Render.
+
+1. Deploy the Vercel project with **Root Directory** set to
+   `promptshelf-frontend`. The Vercel build configuration is in that folder's
+   `vercel.json`. The first deployment can use the default API URL; the backend
+   URL is not known yet.
+2. In Render, create a new Blueprint from this repository. Set the
+   `FRONTEND_ORIGIN` value to the Vercel production URL (for example,
+   `https://your-project.vercel.app`) when prompted.
+3. After the Render service is live, set `VITE_API_URL` in the Vercel project
+   to `https://<your-render-service>.onrender.com/api` and redeploy the
+   frontend.
+4. Optionally add `GEMINI_API_KEY` (and `GEMINI_MODEL`) to the Render service
+   to enable AI prompt analysis.
+
+The Render Blueprint uses its free plan. Free Render services have ephemeral
+storage, so backend JSON data may reset after a restart or redeploy. The
+frontend's browser-local prompt library remains stored in localStorage.
