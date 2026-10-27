@@ -25,11 +25,11 @@ interface PromptCardProps {
 }
 
 const CATEGORY_STYLES: Record<string, { bg: string; text: string; border: string }> = {
-  Coding: { bg: 'bg-cyan-950/25', text: 'text-cyan-400', border: 'border-cyan-800/30' },
-  Debugging: { bg: 'bg-amber-950/25', text: 'text-amber-400', border: 'border-amber-800/30' },
-  Writing: { bg: 'bg-emerald-950/25', text: 'text-emerald-400', border: 'border-emerald-800/30' },
-  Research: { bg: 'bg-violet-950/25', text: 'text-violet-400', border: 'border-violet-800/30' },
-  Productivity: { bg: 'bg-blue-950/25', text: 'text-blue-400', border: 'border-blue-800/30' },
+  Coding: { bg: 'bg-[#171717]', text: 'text-[#A1A1AA]', border: 'border-[#303030]' },
+  Debugging: { bg: 'bg-[#171717]', text: 'text-[#A1A1AA]', border: 'border-[#303030]' },
+  Writing: { bg: 'bg-[#171717]', text: 'text-[#A1A1AA]', border: 'border-[#303030]' },
+  Research: { bg: 'bg-[#171717]', text: 'text-[#A1A1AA]', border: 'border-[#303030]' },
+  Productivity: { bg: 'bg-[#171717]', text: 'text-[#A1A1AA]', border: 'border-[#303030]' },
   Other: { bg: 'bg-[#171717]', text: 'text-[#A1A1AA]', border: 'border-[#262626]' },
 };
 
@@ -147,7 +147,7 @@ export const PromptCard: FC<PromptCardProps> = ({
     <div
       onClick={handleCardClick}
       tabIndex={0}
-      className="group relative flex flex-col justify-between p-5 bg-[#111111] hover:bg-[#191919] focus:bg-[#191919] border border-[#262626] hover:border-[#383838] focus:border-[#404040] rounded-xl transition-all duration-200 cursor-pointer min-h-[140px] outline-none"
+      className="group relative flex min-h-[124px] flex-col justify-between rounded-xl border border-[#262626] bg-[#111111] p-4 transition-colors duration-200 hover:border-[#383838] hover:bg-[#191919] focus:border-[#404040] focus:bg-[#191919] cursor-pointer outline-none"
     >
       {/* Top Header: Category Tag & Favorite (Revealed on hover / active) */}
       <div>

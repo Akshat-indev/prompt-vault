@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { PromptCard } from './PromptCard';
 import type { Prompt } from '../../types/prompt';
-import { Layers, Plus, SearchX } from 'lucide-react';
+import { Plus, SearchX } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 interface PromptListProps {
@@ -18,7 +18,6 @@ interface PromptListProps {
   onNotify?: (message: string, type?: 'success' | 'info' | 'error') => void;
   onOpenCreate: () => void;
   onResetFilters: () => void;
-  onResetToSeeds: () => void;
 }
 
 export const PromptList: FC<PromptListProps> = ({
@@ -35,7 +34,6 @@ export const PromptList: FC<PromptListProps> = ({
   onNotify,
   onOpenCreate,
   onResetFilters,
-  onResetToSeeds,
 }) => {
   if (isLoading) {
     return (
@@ -78,29 +76,20 @@ export const PromptList: FC<PromptListProps> = ({
       );
     }
 
-    // Completely empty library
+    // Keep an empty library unobtrusive; examples remain available from the sidebar.
     return (
-      <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-        <div className="p-4 rounded-xl bg-[#141414] border border-[#262626] text-[#737373] mb-4">
-          <Layers className="w-7 h-7" />
-        </div>
-        <h3 className="text-lg font-medium text-[#F5F5F5]">Your Prompt Library is Empty</h3>
-        <p className="text-xs text-[#A1A1AA] max-w-md mt-1 mb-6">
-          Start by creating your first reusable prompt template with dynamic variables, or load curated developer templates.
+      <div className="flex flex-col items-center justify-center gap-2 px-4 py-14 text-center">
+        <h3 className="text-sm font-medium text-[#F5F5F5]">Your library is empty</h3>
+        <p className="max-w-sm text-xs text-[#737373]">
+          Analyze a prompt above to create your first reusable template.
         </p>
-        <div className="flex items-center gap-3 flex-wrap justify-center">
+        <div className="mt-2 flex items-center gap-3">
           <button
             onClick={onOpenCreate}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#F5F5F5] hover:bg-[#E5E5E5] text-[#090909] font-medium text-xs transition-all cursor-pointer"
+            className="flex items-center gap-2 rounded-lg border border-[#333333] bg-[#171717] px-3 py-2 text-xs font-medium text-[#F5F5F5] transition-colors hover:bg-[#262626] cursor-pointer"
           >
-            <Plus className="w-4 h-4" />
-            <span>Create New Prompt</span>
-          </button>
-          <button
-            onClick={onResetToSeeds}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#171717] hover:bg-[#262626] text-[#A1A1AA] hover:text-[#F5F5F5] font-medium text-xs border border-[#262626] transition-colors cursor-pointer"
-          >
-            <span>Load Example Prompts</span>
+            <Plus className="h-3.5 w-3.5" />
+            <span>Create a prompt</span>
           </button>
         </div>
       </div>

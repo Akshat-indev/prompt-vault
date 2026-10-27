@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { useCallback, useEffect, useRef, useState, type FC } from 'react';
 import {
   X,
   Sparkles,
@@ -21,6 +21,7 @@ import { cn } from '../../utils/cn';
 
 interface NewPromptModalProps {
   isOpen: boolean;
+  analysisRequest?: { id: number; prompt: string };
   onClose: () => void;
   onSave: (data: CreatePromptInput) => void;
   onNotify?: (message: string, type?: 'success' | 'info' | 'error') => void;
@@ -36,16 +37,17 @@ const CATEGORIES = [
 ];
 
 const CATEGORY_STYLES: Record<string, string> = {
-  Coding: 'bg-cyan-950/40 text-cyan-300 border-cyan-800/40',
-  Debugging: 'bg-amber-950/40 text-amber-300 border-amber-800/40',
-  Writing: 'bg-emerald-950/40 text-emerald-300 border-emerald-800/40',
-  Research: 'bg-purple-950/40 text-purple-300 border-purple-800/40',
-  Productivity: 'bg-blue-950/40 text-blue-300 border-blue-800/40',
+  Coding: 'bg-[#171717] text-[#A1A1AA] border-[#303030]',
+  Debugging: 'bg-[#171717] text-[#A1A1AA] border-[#303030]',
+  Writing: 'bg-[#171717] text-[#A1A1AA] border-[#303030]',
+  Research: 'bg-[#171717] text-[#A1A1AA] border-[#303030]',
+  Productivity: 'bg-[#171717] text-[#A1A1AA] border-[#303030]',
   Other: 'bg-[#1c1c1c] text-[#A1A1AA] border-[#262626]',
 };
 
 export const NewPromptModal: FC<NewPromptModalProps> = ({
   isOpen,
+  analysisRequest,
   onClose,
   onSave,
   onNotify,
@@ -70,30 +72,18 @@ export const NewPromptModal: FC<NewPromptModalProps> = ({
   // UI tabs in review screen: 'template' | 'original' | 'variables'
   const [reviewTab, setReviewTab] = useState<'template' | 'original' | 'variables'>('template');
   const [copiedTemplate, setCopiedTemplate] = useState<boolean>(false);
+  const lastAnalysisRequestId = useRef<number>(0);
 
-  if (!isOpen) return null;
-
-  const handleResetAndClose = () => {
-    setStep('input');
-    setRawPrompt('');
-    setErrorMessage(null);
-    setTitle('');
-    setDescription('');
-    setTags([]);
-    setOriginalPrompt('');
-    setGeneralizedPrompt('');
-    setVariables([]);
-    onClose();
-  };
-
-  const handleAnalyzeAndGeneralize = async () => {
-    const trimmed = rawPrompt.trim();
+  const analyzePrompt = useCallback(async (prompt: string) => {
+    const trimmed = prompt.trim();
     if (!trimmed || trimmed.length < 5) {
       setErrorMessage('Please enter at least 5 characters of prompt text to analyze.');
+      setStep('input');
       return;
     }
     if (trimmed.length > 10000) {
       setErrorMessage('Prompt text cannot exceed 10,000 characters.');
+      setStep('input');
       return;
     }
 
@@ -126,6 +116,29 @@ export const NewPromptModal: FC<NewPromptModalProps> = ({
       setStep('input');
       onNotify?.(msg, 'error');
     }
+  }, [onNotify]);
+
+  useEffect(() => {
+    if (!isOpen || !analysisRequest || analysisRequest.id === lastAnalysisRequestId.current) return;
+
+    lastAnalysisRequestId.current = analysisRequest.id;
+    setRawPrompt(analysisRequest.prompt);
+    void analyzePrompt(analysisRequest.prompt);
+  }, [analysisRequest, analyzePrompt, isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleResetAndClose = () => {
+    setStep('input');
+    setRawPrompt('');
+    setErrorMessage(null);
+    setTitle('');
+    setDescription('');
+    setTags([]);
+    setOriginalPrompt('');
+    setGeneralizedPrompt('');
+    setVariables([]);
+    onClose();
   };
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -595,7 +608,7 @@ export const NewPromptModal: FC<NewPromptModalProps> = ({
               </button>
               <button
                 type="button"
-                onClick={handleAnalyzeAndGeneralize}
+                onClick={() => analyzePrompt(rawPrompt)}
                 disabled={!rawPrompt.trim() || rawPrompt.trim().length < 5}
                 className="flex items-center gap-2 px-5 py-2 rounded-lg bg-[#F5F5F5] hover:bg-[#E5E5E5] text-[#090909] text-xs font-medium transition-all duration-150 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >

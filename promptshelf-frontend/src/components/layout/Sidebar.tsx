@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import {
-  Sparkles,
   Bookmark,
   Star,
   Code2,
@@ -24,7 +23,6 @@ interface SidebarProps {
   onSelectCategory: (category: string) => void;
   onSelectFavorites: (onlyFavorites: boolean) => void;
   onOpenCreate: () => void;
-  onOpenAiAnalyze?: () => void;
   onResetToSeeds: () => void;
   backendStatus: 'checking' | 'connected' | 'disconnected';
   isSyncing: boolean;
@@ -50,7 +48,6 @@ export const Sidebar: FC<SidebarProps> = ({
   onSelectCategory,
   onSelectFavorites,
   onOpenCreate,
-  onOpenAiAnalyze,
   onResetToSeeds,
   backendStatus,
   isSyncing,
@@ -119,20 +116,6 @@ export const Sidebar: FC<SidebarProps> = ({
             <Plus className="w-4 h-4" />
             <span>New Prompt</span>
           </button>
-
-          {/* AI Prompt Intelligence Secondary Button */}
-          {onOpenAiAnalyze && (
-            <button
-              onClick={() => {
-                onOpenAiAnalyze();
-                onCloseMobile();
-              }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#171717] hover:bg-[#262626] text-[#A1A1AA] hover:text-[#F5F5F5] font-medium text-xs border border-[#262626] transition-colors cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>AI Prompt Intelligence</span>
-            </button>
-          )}
         </div>
 
         {/* Navigation list */}
